@@ -1,4 +1,4 @@
 # isim
-Un generator for procedural textures, rendered with OpenGL
+Un generator for procedural textures, rendered with Unity
 
 Perlin Noise implementation
