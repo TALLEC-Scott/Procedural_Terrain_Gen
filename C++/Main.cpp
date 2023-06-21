@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
@@ -155,7 +154,6 @@ int main()
     glfwInit();
     GLFWwindow* window = glfwCreateWindow(1280, 720, "Simple Slider Application", NULL, NULL);
     glfwMakeContextCurrent(window);
-    glewInit();
 
     bool texture = false; // to know whether we show the texture map or just the normal noise map
 
