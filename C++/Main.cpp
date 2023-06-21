@@ -65,7 +65,6 @@ std::vector<unsigned char> generatePerlinNoise(int width, int height, float hori
 float octaves, float lacuranity, float amplitude, float frequency, float scale, float offsetx, float offsety, float seed)
 {
     PerlinNoise noise;
-    // To make it easier we always use the perlinnoise without a seed.
     if (seed != -1)
         noise = PerlinNoise(seed);
 
