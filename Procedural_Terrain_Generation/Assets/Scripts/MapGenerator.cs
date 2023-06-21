@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class MapGenerator : MonoBehaviour
 {
     public enum DrawMode
     {
-        NoiseMap, ColourMap, Mesh
+        NoiseMap, ColourMap, Mesh, Materials
     }
     public DrawMode drawMode;
     public int mapWidth;
@@ -22,7 +23,7 @@ public class MapGenerator : MonoBehaviour
     public int seed;
     public Vector2 offset;
     
-    public bool autoUpdate;
+    public bool live;
     
     public TerrainType[] regions;
     public float meshHeightMultiplier;
@@ -31,7 +32,7 @@ public class MapGenerator : MonoBehaviour
     public AnimationCurve meshHeightCurve;
     public void GenerateMap()
     {
-        float[,] noiseMap = Noise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistence, lacunarity, offset);
+        float[,] noiseMap = PerlinNoise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistence, lacunarity, offset);
         Color[] colourMap = new Color[mapWidth * mapHeight];
         for (int y = 0; y < mapHeight; y++)
         {
@@ -50,34 +51,36 @@ public class MapGenerator : MonoBehaviour
             }
         }
         MapDisplay display = FindObjectOfType<MapDisplay>();
-        if (drawMode == DrawMode.NoiseMap)
-            display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
-        else if(drawMode == DrawMode.ColourMap)
+        if (drawMode == DrawMode.ColourMap)
             display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, mapWidth, mapHeight));
+        else if (drawMode == DrawMode.NoiseMap)
+            display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
         else if (drawMode == DrawMode.Mesh)
             display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve),
                 TextureGenerator.TextureFromColourMap(colourMap, mapWidth, mapHeight));
     }
+    [System.Serializable]
+    public struct TerrainType
+    {
+        public string cat;
+        public float height;
+        public Color color;
+    }
+
 
     private void OnValidate()
     {
-        if (mapWidth < 1)
-            mapWidth = 1;
-        if (mapHeight < 1)
-            mapHeight = 1;
+
         if (lacunarity < 1)
             lacunarity = 1;
         if (octaves < 0)
             octaves = 0;
         if (noiseScale < 0)
             noiseScale = 0;
+        if (mapWidth < 1)
+            mapWidth = 1;
+        if (mapHeight < 1)
+            mapHeight = 1;
     }
 }
 
-[System.Serializable]
-public struct TerrainType
-{
-    public string name;
-    public float height;
-    public Color color;
-}
