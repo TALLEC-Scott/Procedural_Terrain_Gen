@@ -12,7 +12,7 @@ class PerlinNoise {
 public:
     PerlinNoise();
     PerlinNoise(unsigned int seed);
-    double noise(double x, double y, double z, float vertical, float horizontal, float twist, float octaves, float lacuranity, float amplitude, float frequency);
+    double noise(double x, double y, double z, float vertical, float horizontal, float twist, float octaves, float lacuranity, float amplitude, float frequency, float scale, float offsetx, float offsety);
 private:
     double fade(double t);
     double lerp(double t, double a, double b);

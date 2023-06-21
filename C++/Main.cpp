@@ -8,7 +8,7 @@
 #include <cmath>
 #include "lodepng.h"
 
-
+// This function will be to get the colours (i have changed them around so much i am not sure if all comments correspond)
 std::vector<unsigned char> getColor(double height)
 {
     if (height >= 0.99)
@@ -61,10 +61,13 @@ std::vector<unsigned char> getColor(double height)
     }
 }
 
-std::vector<unsigned char> generatePerlinNoise(int width, int height, float horizontalRepeat, float verticalRepeat, float twistFactor, bool texture, float octaves, float lacuranity, float amplitude, float frequency)
+std::vector<unsigned char> generatePerlinNoise(int width, int height, float horizontalRepeat, float verticalRepeat, float twistFactor, bool texture, 
+float octaves, float lacuranity, float amplitude, float frequency, float scale, float offsetx, float offsety, float seed)
 {
-    // To make it easier we always use the perlinnoise without a seed.
     PerlinNoise noise;
+    // To make it easier we always use the perlinnoise without a seed.
+    if (seed != -1)
+        noise = PerlinNoise(seed);
 
     std::vector<double> noiseMap;
     noiseMap.resize(width * height);
@@ -78,7 +81,7 @@ std::vector<unsigned char> generatePerlinNoise(int width, int height, float hori
             double y = (double)i / ((double)height);
 
             // Make the noise
-            double n = noise.noise(10 * x, 10 * y, 0.8, horizontalRepeat, verticalRepeat, twistFactor, octaves, lacuranity, amplitude, frequency);
+            double n = noise.noise(10 * x, 10 * y, 0.8, horizontalRepeat, verticalRepeat, twistFactor, octaves, lacuranity, amplitude, frequency, scale, offsetx, offsety);
 
             // Find the heightvalue
             double heightValue = (n + 1) / 2;
@@ -173,15 +176,19 @@ int main()
     float lacuranity = 1.0f;
     float amplitude = 1.0f;
     float frequency = 1.0f;
+    float scale = 1.0f;
+    float offsetx = 0.0f;
+    float offsety = 0.0f;
+    float seed = -1.0f;
     // get the first terrain texture
-    std::vector<unsigned char> image = generatePerlinNoise(imageWidth, imageHeight, horizontal, vertical, twist, true, octaves, lacuranity, amplitude, frequency);
+    std::vector<unsigned char> image = generatePerlinNoise(imageWidth, imageHeight, horizontal, vertical, twist, true, octaves, lacuranity, amplitude, frequency, scale, offsetx, offsety, seed);
 
     if (lodepng::encode("terrain_texture.png", image, imageWidth, imageHeight)) {
         std::cout << "Error: could not save PNG to 'terrain.png'" << std::endl;
     }
 
     // get the first noise
-    image = generatePerlinNoise(imageWidth, imageHeight, horizontal, vertical, twist, texture, octaves, lacuranity, amplitude, frequency);
+    image = generatePerlinNoise(imageWidth, imageHeight, horizontal, vertical, twist, texture, octaves, lacuranity, amplitude, frequency, scale, offsetx, offsety, seed);
 
     if (lodepng::encode("terrain.png", image, imageWidth, imageHeight)) {
         std::cout << "Error: could not save PNG to 'terrain.png'" << std::endl;
@@ -235,15 +242,19 @@ int main()
                 ImGui::SliderFloat("Octaves", &octaves, 1.0f, 10.0f)||
                 ImGui::SliderFloat("Lacuranity", &lacuranity, 1.0f, 4.0f)||
                 ImGui::SliderFloat("Amplitude", &amplitude, 0.0f, 1.0f)||
-                ImGui::SliderFloat("Frequency", &frequency, 0.0f, 2.0f))
+                ImGui::SliderFloat("Frequency", &frequency, 0.0f, 2.0f)|| 
+                ImGui::SliderFloat("OffsetX", &offsetx, 0.0f, 20.0f)|| 
+                ImGui::SliderFloat("OffsetY", &offsety, 0.0f, 20.0f)|| 
+                ImGui::SliderFloat("Scale", &scale, 0.00f, 1.0f)|| 
+                ImGui::SliderFloat("Seed", &seed, 0.00f, 100.0f))
             {
                 // When slider is changed, update the image
-                image = generatePerlinNoise(imageWidth, imageHeight, horizontal, vertical, twist, true, octaves, lacuranity, amplitude, frequency);
+                image = generatePerlinNoise(imageWidth, imageHeight, horizontal, vertical, twist, true, octaves, lacuranity, amplitude, frequency, scale, offsetx, offsety, seed);
                 if (lodepng::encode("terrain_texture.png", image, imageWidth, imageHeight)) {
                     std::cout << "Error: could not save PNG to 'terrain.png'" << std::endl;
                 }
 
-                image = generatePerlinNoise(imageWidth, imageHeight, horizontal, vertical, twist, false, octaves, lacuranity, amplitude, frequency);
+                image = generatePerlinNoise(imageWidth, imageHeight, horizontal, vertical, twist, false, octaves, lacuranity, amplitude, frequency, scale, offsetx, offsety, seed);
                 if (lodepng::encode("terrain.png", image, imageWidth, imageHeight)) {
                     std::cout << "Error: could not save PNG to 'terrain.png'" << std::endl;
                 }

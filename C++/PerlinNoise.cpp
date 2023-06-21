@@ -31,8 +31,12 @@ PerlinNoise::PerlinNoise(unsigned int seed) {
 }
 
 
-double PerlinNoise::noise(double x, double y, double z, float vertical, float horizontal, float twist, float octaves, float lacunarity, float amplitude, float frequency) {
+double PerlinNoise::noise(double x, double y, double z, float vertical, float horizontal, float twist, float octaves, float lacunarity, float amplitude, float frequency, float scale, float offsetx, float offsety) {
     double total = 0;
+
+    x = x * scale + offsetx;
+    y = y * scale + offsety;
+    z = z * scale;
 
     for(int i = 0; i < octaves; i++) {
         // Twist
