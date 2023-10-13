@@ -1,32 +1,54 @@
-# isim
-Un generator for procedural textures, rendered with Unity
+```markdown
+# ISIM
+A generator for procedural textures, rendered with Unity, utilizing a Perlin Noise implementation.
 
-Perlin Noise implementation
+## C++ Part: Procedural Texture Generation
 
+### Prerequisites
+Ensure you have `libimgui-dev` and `libglfw3-dev` installed. If not, you can install them using the following command in the shell:
 
-For the C++ Part:
+```bash
+sudo apt-get install libglfw3-dev libimgui-dev
+```
 
-To run the code please use the following in a shell:
+### Compilation
+To compile the code, use the following command:
 
-make sure you have libimgui-dev and libglfw3-dev, otherwise, 
-
-sudo apt-get install llibglfw3-de vibglfw3-dev
-
-to compile: 
-
+```bash
 g++ -Wall -Wextra -pedantic -std=c++17 Main.cpp PerlinNoise.cpp lodepng.cpp -o terrain_creator -limgui -lstb -lX11 -lglfw -lGL
+```
 
-Then you will be able to run: ./terrain_creator
-The interface should show up.
+### Execution
+After compilation, you can run the application using:
 
-This means you might need to download some extra libraries to run this as it is using glfw and imgui.
+```bash
+./terrain_creator
+```
+The interface should appear, allowing you to interact with the procedural texture generator.
 
-Pour run sur ubuntu a travers windows il vous faudra un programme comme VcXsrv.
+**Note**: You may need to download additional libraries as the application uses `glfw` and `imgui`.
 
-In the C++ file you will find the application already compiled. If you have the correct libraries you can just
-run it using ./terrain_creator.
+### Running on Ubuntu through Windows
+If you're running Ubuntu through Windows, you might need a program like VcXsrv to execute the application.
 
-You will also find a terrain.png which corresponds to the noise map and the terrain_texture which corresponds to
-the textured noise map.
+In the C++ file directory, you will find the application already compiled. If you have the correct libraries, you can run it using `./terrain_creator`.
 
-For the unity section, just open a project with unity and load the sample scene, then select the terrain generators in the scene's objects and utilize it to generate a noise map/height map, color map and mesh.
+You will also find:
+- `terrain.png`: Corresponds to the noise map.
+  - `terrain_texture`: Corresponds to the textured noise map.
+
+## Unity Section: Rendering Textures
+
+To utilize the generated textures in Unity:
+1. Open a project with Unity and load the sample scene.
+   2. Select the terrain generators in the scene's objects.
+   3. Utilize it to generate a noise map/height map, color map, and mesh.
+   4. You can then play around with the different parameters such as
+      - Frequency​
+      - Octaves
+      - Lacunarity
+      - Offset
+      - Amplitude
+
+
+```
