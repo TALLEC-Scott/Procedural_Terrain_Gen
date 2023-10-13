@@ -53,4 +53,10 @@ To utilize the generated textures in Unity:
      
 ### Screenshots
 
+Image of the colorized height map resulting from perlin noise :
+
+![Color Map](color_map.png)
+
+Image of a 3D rendering of this height map :
+![3D Mesh](mesh_map.png)
 
