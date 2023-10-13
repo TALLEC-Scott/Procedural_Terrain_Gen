@@ -46,5 +46,11 @@ To utilize the generated textures in Unity:
       - Frequency​
       - Octaves
       - Lacunarity
-      - Offset
+      - Offset (X and Y)
       - Amplitude
+      - Scale
+      - Seed
+     
+### Screenshots
+
+
