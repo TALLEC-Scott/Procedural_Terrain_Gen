@@ -1,4 +1,3 @@
-```markdown
 # ISIM
 A generator for procedural textures, rendered with Unity, utilizing a Perlin Noise implementation.
 
@@ -49,6 +48,3 @@ To utilize the generated textures in Unity:
       - Lacunarity
       - Offset
       - Amplitude
-
-
-```
