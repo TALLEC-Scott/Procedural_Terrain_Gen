@@ -57,6 +57,6 @@ Image of the colorized height map resulting from perlin noise :
 
 ![Color Map](color_map.png)
 
-Image of a 3D rendering of this height map :
+Image of a 3D render of this height map :
 ![3D Mesh](mesh_map.png)
 
